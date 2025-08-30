@@ -17,7 +17,7 @@ export default function Home() {
           router.push("/profile");
         }
       } else {
-        router.push("/auth/login");
+        router.push("/login");
       }
     }
   }, [session, status, router]);
