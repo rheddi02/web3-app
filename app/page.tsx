@@ -14,7 +14,7 @@ export default function Home() {
         if (session.user.email === "admin@admin.com") {
           router.push("/admin/dashboard");
         } else {
-          router.push("/profile");
+          router.push("/dashboard");
         }
       } else {
         router.push("/login");

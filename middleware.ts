@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest) {
   // Not signed in
   if (!token) {
     if (
-      pathname.startsWith("/profile") ||
+      pathname.startsWith("/dashboard") ||
       pathname.startsWith("/admin") ||
       pathname === "/"
     ) {
@@ -26,16 +26,16 @@ export async function middleware(req: NextRequest) {
     if (token.role === "ADMIN") {
       return NextResponse.redirect(new URL("/admin/dashboard", req.url));
     } else {
-      return NextResponse.redirect(new URL("/profile", req.url));
+      return NextResponse.redirect(new URL("/dashboard", req.url));
     }
   }
 
   // Role-based redirects
   if (pathname.startsWith("/admin") && token.role !== "ADMIN") {
-    return NextResponse.redirect(new URL("/profile", req.url));
+    return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  if (pathname.startsWith("/profile") && token.role === "ADMIN") {
+  if (pathname.startsWith("/dashboard") && token.role === "ADMIN") {
     return NextResponse.redirect(new URL("/admin/dashboard", req.url));
   }
 
@@ -43,5 +43,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/login", "/profile/:path*", "/admin/:path*"],
+  matcher: ["/", "/login", "/dashboard/:path*", "/admin/:path*"],
 };
