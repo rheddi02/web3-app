@@ -3,7 +3,7 @@ import { useRouter, useSelectedLayoutSegments } from "next/navigation";
 import CardTemplate from "@/components/card-template";
 import Link from "next/link";
 import { ArrowRightIcon } from "lucide-react";
-import { Routes } from "@/utils/constants";
+import { Routes } from "@/utils/constant.utils";
 import { cn } from "@/lib/utils";
 
 export default function UserNavigation() {
@@ -11,7 +11,7 @@ export default function UserNavigation() {
   const segment = segments.pop();
   const router = useRouter();
   return (
-    <nav className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <nav className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {Routes.map((route) => (
         <div
             key={route.title}

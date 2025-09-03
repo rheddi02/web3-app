@@ -17,7 +17,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       <div className="max-w-6xl mx-auto">
         <UserHeader />
         <div className="mt-6">
-          <CardTemplate>{children}</CardTemplate>
+          <CardTemplate className="bg-muted">{children}</CardTemplate>
         </div>
       </div>
     </div>

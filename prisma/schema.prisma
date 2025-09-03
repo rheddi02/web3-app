@@ -13,21 +13,21 @@ enum Role {
   USER
 }
 
-
 model User {
-  id            String   @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?  @unique
+  email         String?   @unique
   password      String?
   emailVerified DateTime?
-  role          Role   @default(USER)
+  role          Role      @default(USER)
   image         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  accounts      Account[]
-  sessions      Session[]
-  favorites     Favorites[]
+  accounts    Account[]
+  sessions    Session[]
+  favorites   Favorites[]
+  investments Investment[]
 
   @@index([id])
   @@index([name])
@@ -71,41 +71,57 @@ model VerificationToken {
 }
 
 model Invite {
-  id String @id @default(cuid())
-  email String
-  name String
-  phone String
-  address String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  favorites     Favorites[]
-  tags InviteTags[]
+  id        String       @id @default(cuid())
+  email     String
+  name      String
+  phone     String
+  address   String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  favorites Favorites[]
+  tags      InviteTags[]
 }
 
 model Tags {
-  id String @id @default(cuid())
-  name String @unique
+  id         String       @id @default(cuid())
+  name       String       @unique
   inviteTags InviteTags[]
 }
 
-
 model InviteTags {
   inviteeId String
-  tagId  String
+  tagId     String
 
-  invite Invite @relation(fields: [inviteeId], references: [id])
-  tag  Tags  @relation(fields: [tagId], references: [id])
+  invite Invite? @relation(fields: [inviteeId], references: [id])
+  tag    Tags    @relation(fields: [tagId], references: [id])
 
   @@id([inviteeId, tagId])
 }
 
 model Favorites {
-  userId String
+  userId    String
   inviteeId String
 
-  user User @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
   invite Invite @relation(fields: [inviteeId], references: [id])
 
   @@id([userId, inviteeId])
 }
 
+model Investment {
+  id        String  @id @default(cuid())
+  name      String
+  email     String
+  amount    Int
+  date      DateTime
+  isInvited Boolean @default(true)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([userId])
+}

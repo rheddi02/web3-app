@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Menu, X, LogOut, Home, User, UserPlus } from "lucide-react";
 import { signOut } from "next-auth/react";
-import { Routes } from "@/utils/constants";
+import { Routes } from "@/utils/constant.utils";
 import { cn } from "@/lib/utils";
 
 export default function UserNavigationMobile() {

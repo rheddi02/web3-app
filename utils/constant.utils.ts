@@ -10,9 +10,9 @@ export const Routes = [
     description: "Manage your account and settings",
     href: "account",
   },
-  {
-    title: "Invite",
-    description: "View and manage your account invites",
-    href: "invite",
-  },
+  // {
+  //   title: "Invite",
+  //   description: "View and manage your account invites",
+  //   href: "invite",
+  // },
 ]
