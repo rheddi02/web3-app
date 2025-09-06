@@ -21,7 +21,7 @@ import React from 'react'
           <div>Total Team Member</div>
           <div className='mt-4 text-right'>
             <span className='font-bold text-3xl'>
-              <span className='text-xs text-primary mr-2'>Active</span>{investments.filter((investment) => investment.amount > 0).length} <span className='text-base text-gray-500'>/ {investments.length}</span>
+              <span className='text-xs text-primary mr-2'>Active</span>{investments.filter((investment) => investment.isInvited).filter((investment) => investment.amount > 0).length} <span className='text-base text-gray-500'>/ {investments.filter((investment) => investment.isInvited).length}</span>
             </span>
           </div>
         </CardTemplate>
