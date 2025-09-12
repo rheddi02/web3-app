@@ -152,7 +152,7 @@ const AccountPage = () => {
       </div>
 
       {/* Accounts List */}
-      {investments.length === 0 ? (
+      {investments.length === 0 && !isLoading ? (
         <CardTemplate>
           <p className="text-muted-foreground text-center py-8">
             No accounts found. Create your first account!
