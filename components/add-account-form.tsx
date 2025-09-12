@@ -105,7 +105,7 @@ export function AddAccountForm({ onSuccess }: AddAccountFormProps) {
           Add New Account
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] text-primary/90">
         <DialogHeader>
           <DialogTitle>Add New Account</DialogTitle>
           <DialogDescription>
