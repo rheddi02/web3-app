@@ -19,11 +19,11 @@ export default function UserNavigation() {
             router.push(route.href);
           }}
         >
-          <CardTemplate
+          <div
             className={cn(
-              "md:p-6 p-4",
+              "md:p-6 p-4 rounded-lg ",
               "hover:scale-105 transition-all duration-300 cursor-pointer ",
-              segment === route.href ? "bg-secondary text-secondary-foreground" : "bg-disabled"
+              segment === route.href ? "bg-secondary text-secondary-foreground" : "bg-disabled border"
             )}
           >
             <h3 className="text-lg font-semibold text-card-foreground mb-2 flex items-center justify-between">
@@ -33,7 +33,7 @@ export default function UserNavigation() {
               </Link>
             </h3>
             <p className="text-muted-foreground">{route.description}</p>
-          </CardTemplate>
+          </div>
         </div>
       ))}
     </nav>

@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import UserHeader from "./_components/header";
 import CardTemplate from "@/components/card-template";
+import CustomDialog from "@/components/custom-dialog";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await getServerSession(authOptions);
@@ -13,14 +14,17 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     redirect("/login");
   }
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-6xl mx-auto">
-        <UserHeader />
-        <div className="mt-6">
-          <CardTemplate className="bg-muted">{children}</CardTemplate>
+    <>
+      <CustomDialog />
+      <div className="min-h-screen bg-background p-8">
+        <div className="max-w-6xl mx-auto">
+          <UserHeader />
+          <div className="mt-6">
+            <CardTemplate className="bg-muted">{children}</CardTemplate>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

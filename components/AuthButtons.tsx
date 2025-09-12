@@ -4,6 +4,7 @@ import { Loader2 } from "lucide-react";
 import { signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import useUserStore from "@/store/user.store";
 
 export function SignInGoogle() {
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +57,19 @@ export function SignInGoogle() {
 
 export function SignOutButton() {
   const [isLoading, setisLoading] = useState(false);
+  const { setDialog, resetDialog } = useUserStore();
+
+  const confirmSignout = () => {
+    setDialog({
+      title: "Sign Out",
+      description: "Are you sure you want to sign out?",
+      open: true,
+      actionButton: "Sign Out",
+      cancelButton: "Cancel",
+      action: () => handleSignOut(),
+      cancel: () => resetDialog(),
+    });
+  };
   const handleSignOut = async () => {
     try {
       setisLoading(true);
@@ -72,7 +86,7 @@ export function SignOutButton() {
 
   return (
     <Button
-      onClick={handleSignOut}
+      onClick={confirmSignout}
       disabled={isLoading}
       variant="outline"
       size="lg"
