@@ -142,93 +142,94 @@ const AccountPage = () => {
         <h2 className="text-2xl font-bold">Accounts</h2>
         <AddAccountForm />
       </div>
-
-      {/* Accounts List */}
-      {investments.length === 0 && !isLoading ? (
-        <CardTemplate>
-          <p className="text-muted-foreground text-center py-8">
-            No accounts found. Create your first account!
-          </p>
-        </CardTemplate>
-      ) : (
-        investments.map((investment) => {
-          const isDeleting =
-            deleteMutation.isPending && deletingId === investment.id;
-          return (
-            <Fragment key={investment.id}>
-              <CardTemplate isInviteCard isInvited={investment.isInvited}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
-                  <div>
-                    <Label className="text-muted-foreground mb-3">
-                      Account Details:{" "}
-                    </Label>
-                    <p className="text-secondary-foreground capitalize">
-                      {investment.name}
-                    </p>
-                    <p className="text-secondary-foreground">
-                      {investment.email}
-                    </p>
+      <div className="flex flex-col gap-4 h-[calc(100vh-400px)] overflow-y-scroll">
+        {/* Accounts List */}
+        {investments.length === 0 && !isLoading ? (
+          <CardTemplate>
+            <p className="text-muted-foreground text-center py-8">
+              No accounts found. Create your first account!
+            </p>
+          </CardTemplate>
+        ) : (
+          investments.map((investment) => {
+            const isDeleting =
+              deleteMutation.isPending && deletingId === investment.id;
+            return (
+              <Fragment key={investment.id}>
+                <CardTemplate isInviteCard isInvited={investment.isInvited}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
+                    <div>
+                      <Label className="text-muted-foreground mb-3">
+                        Account Details:{" "}
+                      </Label>
+                      <p className="text-secondary-foreground capitalize">
+                        {investment.name}
+                      </p>
+                      <p className="text-secondary-foreground">
+                        {investment.email}
+                      </p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground mb-3">
+                        Join Date:{" "}
+                      </Label>
+                      <p className="text-secondary-foreground">
+                        {formatDate(
+                          new Date(investment.date),
+                          true,
+                          true,
+                          true,
+                          false,
+                          false
+                        )}
+                      </p>
+                      <p className="text-secondary-foreground">
+                        {formatDate(
+                          new Date(investment.date),
+                          false,
+                          false,
+                          false,
+                          true,
+                          true
+                        )}
+                      </p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground mb-3">
+                        Investment Amount:{" "}
+                      </Label>
+                      <p className="text-secondary-foreground">
+                        {investment.amount.toLocaleString()} Php
+                      </p>
+                    </div>
+                    <div className="flex flex-col justify-end gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => requestEdit(investment)}
+                        className="inline-flex items-center gap-2"
+                      >
+                        <Pencil className="h-4 w-4" />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => requestDelete(investment.id)}
+                        disabled={isDeleting}
+                        className="inline-flex items-center gap-2"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        {isDeleting ? "Deleting..." : "Delete"}
+                      </Button>
+                    </div>
                   </div>
-                  <div>
-                    <Label className="text-muted-foreground mb-3">
-                      Join Date:{" "}
-                    </Label>
-                    <p className="text-secondary-foreground">
-                      {formatDate(
-                        new Date(investment.date),
-                        true,
-                        true,
-                        true,
-                        false,
-                        false
-                      )}
-                    </p>
-                    <p className="text-secondary-foreground">
-                      {formatDate(
-                        new Date(investment.date),
-                        false,
-                        false,
-                        false,
-                        true,
-                        true
-                      )}
-                    </p>
-                  </div>
-                  <div>
-                    <Label className="text-muted-foreground mb-3">
-                      Investment Amount:{" "}
-                    </Label>
-                    <p className="text-secondary-foreground">
-                      {investment.amount.toLocaleString()} Php
-                    </p>
-                  </div>
-                  <div className="flex flex-col justify-end gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => requestEdit(investment)}
-                      className="inline-flex items-center gap-2"
-                    >
-                      <Pencil className="h-4 w-4" />
-                      Edit
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => requestDelete(investment.id)}
-                      disabled={isDeleting}
-                      className="inline-flex items-center gap-2"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      {isDeleting ? "Deleting..." : "Delete"}
-                    </Button>
-                  </div>
-                </div>
-              </CardTemplate>
-            </Fragment>
-          );
-        })
-      )}
+                </CardTemplate>
+              </Fragment>
+            );
+          })
+        )}
+      </div>
 
       {/* Confirm Delete Modal */}
       <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
