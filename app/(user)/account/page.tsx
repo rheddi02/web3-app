@@ -6,6 +6,7 @@ import {
   useInvestments,
   useDeleteInvestment,
   useUpdateInvestment,
+  Investment,
 } from "@/hooks/useInvestments";
 import { AddAccountForm } from "@/components/add-account-form";
 import React, { Fragment, useState } from "react";
@@ -22,6 +23,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import { ListView } from "./_components/list-table";
+import GridView from "./_components/list-grid";
 
 function toLocalInput(dateIso: string) {
   const d = new Date(dateIso);
@@ -29,25 +32,6 @@ function toLocalInput(dateIso: string) {
   const local = new Date(d.getTime() - off * 60000);
   return local.toISOString().slice(0, 16);
 }
-
-const InvestmentDayCard = ({
-  day,
-  date,
-  amount,
-}: {
-  day: number;
-  date: string;
-  amount: number;
-}) => (
-  <CardTemplate className="py-4 rounded-none">
-    <div className="flex justify-between items-center">
-      <Label>
-        Day {day} - {date}
-      </Label>
-      <Label>{amount.toLocaleString()} Php</Label>
-    </div>
-  </CardTemplate>
-);
 
 const AccountPage = () => {
   const {
@@ -60,7 +44,8 @@ const AccountPage = () => {
   const updateMutation = useUpdateInvestment();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [toDeleteId, setToDeleteId] = useState<string | null>(null);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | undefined>(undefined);
+  const [listType, setListType] = useState<'list' | 'grid'>('list');
 
   const [editOpen, setEditOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -99,7 +84,7 @@ const AccountPage = () => {
       onSettled: () => {
         setConfirmOpen(false);
         setToDeleteId(null);
-        setDeletingId(null);
+        setDeletingId(undefined);
       },
     });
   };
@@ -139,7 +124,15 @@ const AccountPage = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Accounts</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-2xl font-bold">Accounts</h2>
+          <Button variant={listType === 'grid' ? 'outline' : 'default'} size={'sm'} onClick={() => setListType('list')}>
+            List
+          </Button>
+          <Button variant={listType === 'list' ? 'outline' : 'default'} size={'sm'} onClick={() => setListType('grid')}>
+            Grid
+          </Button>
+        </div>
         <AddAccountForm />
       </div>
       <div className="flex flex-col gap-4 h-[calc(100vh-400px)] overflow-y-scroll">
@@ -151,83 +144,15 @@ const AccountPage = () => {
             </p>
           </CardTemplate>
         ) : (
-          investments.map((investment) => {
-            const isDeleting =
-              deleteMutation.isPending && deletingId === investment.id;
-            return (
-              <Fragment key={investment.id}>
-                <CardTemplate isInviteCard isInvited={investment.isInvited}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
-                    <div>
-                      <Label className="text-muted-foreground mb-3">
-                        Account Details:{" "}
-                      </Label>
-                      <p className="text-secondary-foreground capitalize">
-                        {investment.name}
-                      </p>
-                      <p className="text-secondary-foreground">
-                        {investment.email}
-                      </p>
-                    </div>
-                    <div>
-                      <Label className="text-muted-foreground mb-3">
-                        Join Date:{" "}
-                      </Label>
-                      <p className="text-secondary-foreground">
-                        {formatDate(
-                          new Date(investment.date),
-                          true,
-                          true,
-                          true,
-                          false,
-                          false
-                        )}
-                      </p>
-                      <p className="text-secondary-foreground">
-                        {formatDate(
-                          new Date(investment.date),
-                          false,
-                          false,
-                          false,
-                          true,
-                          true
-                        )}
-                      </p>
-                    </div>
-                    <div>
-                      <Label className="text-muted-foreground mb-3">
-                        Investment Amount:{" "}
-                      </Label>
-                      <p className="text-secondary-foreground">
-                        {investment.amount.toLocaleString()} Php
-                      </p>
-                    </div>
-                    <div className="flex flex-col justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => requestEdit(investment)}
-                        className="inline-flex items-center gap-2"
-                      >
-                        <Pencil className="h-4 w-4" />
-                        Edit
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => requestDelete(investment.id)}
-                        disabled={isDeleting}
-                        className="inline-flex items-center gap-2"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                        {isDeleting ? "Deleting..." : "Delete"}
-                      </Button>
-                    </div>
-                  </div>
-                </CardTemplate>
-              </Fragment>
-            );
-          })
+          listType === 'list' ? (
+            <ListView
+              {...{ investments, deleteMutation, deletingId, requestDelete, requestEdit }}
+            />
+          ) : (
+            <GridView
+              {...{ investments, deleteMutation, deletingId, requestDelete, requestEdit }}
+            />
+          )
         )}
       </div>
 
@@ -333,5 +258,6 @@ const AccountPage = () => {
     </div>
   );
 };
+
 
 export default AccountPage;
