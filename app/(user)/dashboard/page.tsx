@@ -37,14 +37,14 @@ import React from 'react'
           <div>Team Income Per Day</div>
           <div className='mt-4 text-right'>
             <span className='font-bold text-3xl'>
-              {myTotalDailyIncome + totalTeamIncome }
+              {(myTotalDailyIncome + totalTeamIncome).toFixed(2)}
             </span> Php
           </div>
         </CardTemplate>
         <CardTemplate className=''>
           <div>Personal Income Per Day</div>
           <div className='mt-4 text-right'>
-            <span className='font-bold text-3xl'>{myTotalDailyIncome}</span> Php
+            <span className='font-bold text-3xl'>{myTotalDailyIncome.toFixed(2)}</span> Php
           </div>
         </CardTemplate>
       </div>
